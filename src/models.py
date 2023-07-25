@@ -38,15 +38,18 @@ Output format:
 ```"""
 
     story_str, model, temp = get_chat_response(prompt)
-    if "```json" in story_str:
-        story_str = re.search(r"```json(.*)```", story_str, re.DOTALL).group(1).strip()
-    if re.search(r"\{.*}", story_str, re.DOTALL) is None:
-        story_str = f'{{"title": "N/A", "story": "{story_str}"}}'
-    story_str = re.search(r"\{.*}", story_str, re.DOTALL).group(0).strip()
-    stor_temp_obj = json.loads(story_str, strict=False)
-    story_obj = Story(stor_temp_obj["title"], stor_temp_obj["story"], selected_words, is_positive_words, model, temp)
+    try:
+        if "```json" in story_str:
+            story_str = re.search(r"```json(.*)```", story_str, re.DOTALL).group(1).strip()
+        if re.search(r"\{.*}", story_str, re.DOTALL) is None:
+            story_str = f'{{"title": "N/A", "story": "{story_str}"}}'
+        story_str = re.search(r"\{.*}", story_str, re.DOTALL).group(0).strip()
+        stor_temp_obj = json.loads(story_str, strict=False)
+        story_obj = Story(stor_temp_obj["title"], stor_temp_obj["story"], selected_words, is_positive_words, model, temp)
 
-    save_story_obj_to_file(story_obj.to_json())
+        save_story_obj_to_file(story_obj.to_json())
+    except:
+        story_obj = generate_game_story(words, is_positive_words)
 
     return story_obj
 
@@ -65,6 +68,7 @@ Output format:
 ```"""
 
     ending_str, model, temp = get_chat_response(prompt, temperature=0)
+
     if "```json" in ending_str:
         ending_str = re.search(r"```json(.*)```", ending_str, re.DOTALL).group(1).strip()
     if re.search(r"\{.*}", ending_str, re.DOTALL) is None:

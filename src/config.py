@@ -1,6 +1,6 @@
 from pathlib import Path
 
-IS_POSITIVE_WORDS = True
+IS_POSITIVE_WORDS = False
 MAX_NUM_STORIES = 100
 MODEL = "gpt-3.5-turbo"
 TEMPERATURE = 1

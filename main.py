@@ -44,7 +44,7 @@ def main():
         print(f"Number of stories to evaluate: {len(story_objs)}")
         for story_obj in story_objs:
             print(f"--- Progress: {story_objs.index(story_obj)}/{len(story_objs)} ---")
-            story = Story('', '')
+            story = Story('', '', [], True)
             story.from_json(story_obj)
             evaluate_game_story_ending(story)
             rate_limit_sleeper()
